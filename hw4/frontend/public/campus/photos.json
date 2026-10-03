@@ -1,0 +1,30 @@
+{
+  "winter": {
+    "url": "/campus/winter.jpg",
+    "title": "Snow in the Hopper College courtyard",
+    "credit": "Photo: Anthony Tokman, CC BY-SA 4.0, via Wikimedia Commons (resized)",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Calhoun_snow.jpg",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+  },
+  "spring": {
+    "url": "/campus/spring.jpg",
+    "title": "Saybrook's Killingworth Court in bloom",
+    "credit": "Photo: Nick Allen, CC BY-SA 3.0, via Wikimedia Commons (resized)",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Killingworth_Courtyard_spring.JPG",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  },
+  "summer": {
+    "url": "/campus/summer.jpg",
+    "title": "Harkness Tower from Old Campus",
+    "credit": "Photo: Carol M. Highsmith, Library of Congress (public domain)",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Harkness_Tower_Canopy_Highsmith.jpg",
+    "license_url": null
+  },
+  "fall": {
+    "url": "/campus/fall.jpg",
+    "title": "Autumn walk by Cross Campus",
+    "credit": "Photo: Emilie Foyer, CC BY-SA 3.0, via Wikimedia Commons (resized)",
+    "source_url": "https://commons.wikimedia.org/wiki/File:Yale_University_Cross_Campus_2.jpg",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/"
+  }
+}

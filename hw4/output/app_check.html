@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Campus Customs — Site Testing (App Check)</title>
+<style>
+  :root {
+    --blue: #00356b; --blue-mid: #286dc0; --sky: #e8f1fb; --ink: #0f1e33; --muted: #5b6b80;
+    --line: #d6e2f0; --pass: #1a7f4b; --pass-bg: #e6f4ec; --card: #ffffff; --bg: #f5f8fc;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif; color: var(--ink); background: var(--bg); }
+  header { background: var(--blue); color: #fff; padding: 2.5rem 1.5rem 2rem; }
+  header .wrap, main { max-width: 1100px; margin: 0 auto; }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-size: 2.2rem; margin: 0 0 .4rem; }
+  header p { margin: .2rem 0; color: #dbe8f8; }
+  main { padding: 1.5rem; }
+  .meta, .summary { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem 1.4rem; margin: 1.2rem 0; }
+  .meta dl { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.2rem; margin: 0; }
+  .meta dt { font-weight: 700; color: var(--blue); }
+  .meta dd { margin: 0; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: .55rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--blue); font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; }
+  .pass { display: inline-block; background: var(--pass-bg); color: var(--pass); font-weight: 700; border-radius: 999px; padding: .1rem .7rem; font-size: .85rem; }
+  section.check { background: var(--card); border: 1px solid var(--line); border-top: 5px solid var(--blue); border-radius: 16px; padding: 1.5rem; margin: 2rem 0; box-shadow: 0 6px 24px rgba(0,53,107,.08); }
+  section.check h2 { font-family: Georgia, "Times New Roman", serif; color: var(--blue); margin: 0 0 .3rem; font-size: 1.6rem; }
+  .eyebrow { color: var(--blue-mid); font-weight: 700; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin: 0; }
+  figure { margin: 1rem 0; }
+  figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; }
+  figcaption { color: var(--muted); font-size: .92rem; margin-top: .5rem; }
+  .proves { background: var(--sky); border-left: 4px solid var(--blue); border-radius: 8px; padding: .8rem 1rem; margin: 1rem 0 0; }
+  .proves strong { color: var(--blue); }
+  .evidence { margin-top: 1rem; }
+  .evidence td:first-child { font-weight: 600; white-space: nowrap; }
+  code { background: var(--sky); padding: .05rem .35rem; border-radius: 5px; font-size: .88em; }
+  blockquote { margin: .6rem 0; padding: .6rem 1rem; border-left: 3px solid var(--line); color: var(--ink); background: #fafcff; border-radius: 6px; }
+  footer { color: var(--muted); font-size: .85rem; text-align: center; padding: 2rem 1rem 3rem; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Site Testing (App Check)</h1>
+    <p>Campus Customs — Yale merch shop with Handsome Dan, the Pydantic AI shopping assistant.</p>
+    <p>Problem 11 · tested 2026-10-03 on the running local site.</p>
+  </div>
+</header>
+
+<main>
+  <div class="meta">
+    <dl>
+      <dt>Site under test</dt><dd>Local app: React + Vite frontend at <code>http://localhost:5173</code>, FastAPI backend at <code>http://127.0.0.1:8000</code>, database <code>data/campus_customs.db</code></dd>
+      <dt>Agent</dt><dd>Handsome Dan (Pydantic AI), model <code>gpt-6-luna</code> via Portkey</dd>
+      <dt>How tested</dt><dd>A scripted Chrome session (puppeteer-core, a throwaway browser profile) clicked and typed like a guest shopper and took each screenshot. Each on-screen value was then compared with the database.</dd>
+      <dt>Session</dt><dd>Guest (not signed in), light theme, fall season</dd>
+    </dl>
+  </div>
+
+  <div class="summary">
+    <table>
+      <thead><tr><th>Check</th><th>What was tested</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>Inventory level on the product page and in Dan's answer</td><td><span class="pass">PASS</span></td></tr>
+        <tr><td>B</td><td>A category question ("hoodies") makes product cards appear on the page</td><td><span class="pass">PASS</span></td></tr>
+        <tr><td>C</td><td>Problem 9 usability: typo-tolerant live search</td><td><span class="pass">PASS</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===================== A ===================== -->
+  <section class="check" id="check-a">
+    <p class="eyebrow">Check A</p>
+    <h2>Inventory level is shown correctly</h2>
+    <p>On the <strong>Football Left Chest T Shirt</strong> page, the size grid shows stock for each size. I asked Handsome Dan "Do you have this one in M?" from that page. He answered from the live database: <em>"The Football Left Chest T Shirt is sold out in M. It's in stock in S, L, and XXL."</em></p>
+    <figure>
+      <img src="app_check_images/a-inventory.png" alt="Product page for the Football Left Chest T Shirt showing per-size stock (XS sold out, S only 2 left, M sold out, L only 2 left, XL sold out, XXL 5 in stock) next to the open chat where Handsome Dan says it is sold out in M and in stock in S, L and XXL." />
+      <figcaption>Product page with the size grid (left) and Handsome Dan's answer about "this one" (right).</figcaption>
+    </figure>
+    <table class="evidence">
+      <thead><tr><th>Size</th><th>On the page</th><th>Database (<code>inventory.quantity</code>)</th></tr></thead>
+      <tbody>
+        <tr><td>XS</td><td>Sold out</td><td>0</td></tr>
+        <tr><td>S</td><td>Only 2 left</td><td>2</td></tr>
+        <tr><td>M</td><td>Sold out</td><td>0</td></tr>
+        <tr><td>L</td><td>Only 2 left</td><td>2</td></tr>
+        <tr><td>XL</td><td>Sold out</td><td>0</td></tr>
+        <tr><td>XXL</td><td>5 in stock</td><td>5</td></tr>
+        <tr><td>Total</td><td>9 in stock across all sizes</td><td>9</td></tr>
+      </tbody>
+    </table>
+    <p class="proves"><strong>What this proves:</strong> The page and the AI agent both report the real stock from the database, size by size. Sold-out sizes are shown as sold out, not hidden or invented. Dan also used the page context: "this one" correctly meant the product on screen.</p>
+  </section>
+
+  <!-- ===================== B ===================== -->
+  <section class="check" id="check-b">
+    <p class="eyebrow">Check B</p>
+    <h2>Dynamic search: a category question puts product cards on the page</h2>
+    <p>On the Products page I asked Handsome Dan <strong>"What hoodies do you have?"</strong>. He replied: <em>"We have 27 hoodies, including pullover and full-zip styles, team designs, and family picks…"</em>. The page then switched to his results, with the banner "Handsome Dan found 27 matches for 'Hoodies'" and 27 product cards.</p>
+    <figure>
+      <img src="app_check_images/b-chat-search.png" alt="Products page after the chat question: banner 'Handsome Dan found 27 matches for Hoodies', a '27 products' count and hoodie product cards with images, names and prices; the chat panel on the right shows matching hoodie mini-cards." />
+      <figcaption>The page after the chat answer: Dan's banner, the "27 products" count and real product cards (image, name, price, short description). Matching mini-cards also appear in the chat.</figcaption>
+    </figure>
+    <table class="evidence">
+      <tbody>
+        <tr><td>Page address after the answer</td><td><code>/products?ids=…&amp;chat=Hoodies</code> with 27 product IDs</td></tr>
+        <tr><td>Cards on the page</td><td>27</td></tr>
+        <tr><td>Database</td><td>27 hoodies: 25 <code>pullover hoodie</code> + 2 <code>full-zip hoodie</code></td></tr>
+      </tbody>
+    </table>
+    <p class="proves"><strong>What this proves:</strong> The agent returns structured matches (product IDs), and the website turns them into product cards on the page. This is the API contract from Problem 7 working end to end. The number of cards matches the database exactly, and each card links to that product's detail page.</p>
+  </section>
+
+  <!-- ===================== C ===================== -->
+  <section class="check" id="check-c">
+    <p class="eyebrow">Check C · Problem 9 usability feature</p>
+    <h2>Typo-tolerant, live product search</h2>
+    <p>On the Products page I typed <strong>hooddies</strong>, misspelled, one letter at a time. The results updated as I typed. The page explained the fix, "Showing results for 'hoodie' (you typed 'hooddies')", and listed 27 products.</p>
+    <figure>
+      <img src="app_check_images/c-fuzzy-search.png" alt="Products page with 'hooddies' typed in the search box, the line 'Showing results for hoodie (you typed hooddies)', a '27 products' count and hoodie cards." />
+      <figcaption>The misspelled search is corrected automatically and still finds every hoodie.</figcaption>
+    </figure>
+    <table class="evidence">
+      <tbody>
+        <tr><td>Typed</td><td><code>hooddies</code></td></tr>
+        <tr><td>Corrected to</td><td><code>hoodie</code> (shown to the shopper)</td></tr>
+        <tr><td>Results</td><td>27 products, the same as the correct spelling "hoodie"</td></tr>
+      </tbody>
+    </table>
+    <p class="proves"><strong>What this proves:</strong> The Problem 9 search improvement works in the live app. Misspellings are corrected against the catalogue's own words, results update while typing, and a shopper who types fast still finds the products instead of a "no results" dead end.</p>
+  </section>
+
+</main>
+
+<footer>Campus Customs · HW 4 · Site Testing (App Check) · screenshots in <code>app_check_images/</code></footer>
+<script>
+  // Some preview panes can't load local files. If a screenshot fails, say how to view it.
+  document.querySelectorAll('figure img').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var note = document.createElement('p');
+      note.className = 'proves';
+      note.textContent = 'Screenshot not shown in this viewer. Open app_check.html directly (double-click it in Finder) so the browser can load ' + img.getAttribute('src') + '.';
+      img.replaceWith(note);
+    });
+  });
+</script>
+</body>
+</html>

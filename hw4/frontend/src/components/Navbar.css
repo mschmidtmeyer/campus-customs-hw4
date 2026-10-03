@@ -1,0 +1,407 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--yale-blue);
+  color: var(--white);
+  box-shadow: 0 2px 12px rgba(0, 33, 71, 0.25);
+}
+
+.navbar__inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.65rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--white);
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar__wordmark {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.1;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar__wordmark small {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ---------- Handsome Dan logo: English bulldog head, pure CSS ----------
+   Everything is positioned in % of a square box, so it scales cleanly. */
+.dan-logo {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 3px rgba(0, 20, 45, 0.35));
+}
+.dan-logo > span { position: absolute; display: block; }
+/* Folded "rose" ears: small, set high and wide, flap folded back. */
+.dan-logo__ear {
+  top: 9%;
+  width: 26%;
+  height: 22%;
+  background: #8f5f3a;
+  border-radius: 80% 10% 70% 30%;
+}
+.dan-logo__ear::after {
+  content: '';
+  position: absolute;
+  inset: 28% 22% 18% 30%;
+  background: #c9926a;
+  border-radius: 70% 10% 70% 30%;
+}
+.dan-logo__ear--l { left: 1%; transform: rotate(-32deg); }
+.dan-logo__ear--r { right: 1%; transform: rotate(32deg) scaleX(-1); }
+/* Broad, flat-topped fawn skull. */
+.dan-logo__head {
+  top: 14%;
+  left: 7%;
+  width: 86%;
+  height: 66%;
+  background: radial-gradient(ellipse at 50% 30%, #e8b984 0%, #d29b62 70%, #b98250 100%);
+  border-radius: 46% 46% 40% 40% / 52% 52% 46% 46%;
+}
+/* Forehead wrinkles. */
+.dan-logo__head::before,
+.dan-logo__head::after {
+  content: '';
+  position: absolute;
+  left: 28%;
+  width: 44%;
+  height: 16%;
+  border-top: 1.5px solid rgba(110, 62, 28, 0.55);
+  border-radius: 50% 50% 0 0;
+}
+.dan-logo__head::before { top: 10%; }
+.dan-logo__head::after { top: 21%; left: 33%; width: 34%; }
+/* White blaze running down to the muzzle. */
+.dan-logo__blaze {
+  top: 30%;
+  left: 43%;
+  width: 14%;
+  height: 30%;
+  background: #fbf3e6;
+  border-radius: 50% 50% 30% 30%;
+}
+.dan-logo__eye {
+  top: 40%;
+  width: 11%;
+  height: 11%;
+  background: #1a1414;
+  border-radius: 50%;
+  box-shadow: inset 1px -1px 0 rgba(255, 255, 255, 0.85), 0 -1.5px 0 rgba(110, 62, 28, 0.6);
+}
+.dan-logo__eye--l { left: 25%; }
+.dan-logo__eye--r { right: 25%; }
+/* Heavy, drooping jowls either side of the flat muzzle. */
+.dan-logo__jowl {
+  top: 52%;
+  width: 34%;
+  height: 28%;
+  background: #fbf3e6;
+  border-radius: 45% 45% 55% 55% / 40% 40% 70% 70%;
+  box-shadow: inset 0 -2px 0 rgba(150, 110, 70, 0.3);
+}
+.dan-logo__jowl--l { left: 17%; }
+.dan-logo__jowl--r { right: 17%; }
+/* Underbite: lower jaw juts out with two little teeth. */
+.dan-logo__jaw {
+  top: 65%;
+  left: 37%;
+  width: 26%;
+  height: 11%;
+  background: #6b2f2f;
+  border-radius: 30% 30% 60% 60%;
+}
+.dan-logo__jaw::before,
+.dan-logo__jaw::after {
+  content: '';
+  position: absolute;
+  top: -20%;
+  width: 22%;
+  height: 60%;
+  background: #fff;
+  border-radius: 1px 1px 40% 40%;
+}
+.dan-logo__jaw::before { left: 14%; }
+.dan-logo__jaw::after { right: 14%; }
+/* Small, wide, dark nose pushed up into the face. */
+.dan-logo__nose {
+  top: 50%;
+  left: 36%;
+  width: 28%;
+  height: 12%;
+  background: #1d1717;
+  border-radius: 40% 40% 50% 50%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.dan-logo__collar {
+  top: 80%;
+  left: 18%;
+  width: 64%;
+  height: 10%;
+  background: #00356b;
+  border: 1.5px solid #fff;
+  border-radius: 3px;
+}
+.dan-logo > .dan-logo__tag {
+  top: 79%;
+  left: 39%;
+  width: 22%;
+  height: 22%;
+  background: #fff;
+  color: #00356b;
+  border: 1px solid #00356b;
+  border-radius: 50%;
+  font: 800 8px/1 var(--font-serif);
+  display: grid;
+  place-items: center;
+}
+
+.navbar__nav {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.navbar__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.navbar__auth {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  position: relative;
+}
+.nav-link:hover { color: var(--white); background: rgba(255, 255, 255, 0.1); }
+.nav-link--active { color: var(--white); }
+.nav-link--active::after {
+  content: '';
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--season-accent);
+}
+
+.nav-cta {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--yale-blue);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.nav-cta:hover, .nav-cta--active { background: var(--sky); }
+
+.navbar a:focus-visible,
+.navbar button:focus-visible {
+  outline: 3px solid var(--focus-ring-on-dark);
+  outline-offset: 2px;
+}
+
+.navbar__toggle {
+  display: none;
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.6rem;
+  cursor: pointer;
+}
+.burger { display: flex; flex-direction: column; gap: 4px; width: 22px; }
+.burger span {
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.burger--open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger--open span:nth-child(2) { opacity: 0; }
+.burger--open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 960px) {
+  .navbar__toggle { display: block; }
+  .navbar__nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--yale-blue);
+    padding: 0.75rem 1.25rem 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 33, 71, 0.3);
+  }
+  .navbar__nav--open { display: flex; }
+  .navbar__links { flex-direction: column; }
+  .nav-link { display: block; padding: 0.75rem; }
+  .nav-link--active { background: rgba(255, 255, 255, 0.12); }
+  .nav-link--active::after { display: none; }
+  .navbar__auth { flex-direction: column; align-items: stretch; }
+  .nav-cta { text-align: center; padding: 0.75rem; }
+}
+
+@media (max-width: 420px) {
+  .navbar__wordmark small { display: none; }
+  .navbar__wordmark { font-size: 1.15rem; }
+}
+
+/* Signed-in state */
+.navbar__hello { color: var(--white); font-weight: 600; padding: 0 0.4rem; white-space: nowrap; }
+.nav-cta--button { border: 0; cursor: pointer; font: inherit; }
+.navbar__hello { text-decoration: none; }
+.navbar__hello:hover { text-decoration: underline; }
+
+/* ---------- Theme toggle (sun / moon) ---------- */
+.theme-toggle {
+  order: 2;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.2s ease;
+}
+.theme-toggle:hover { background: rgba(255, 255, 255, 0.18); }
+.theme-toggle:active { transform: rotate(-20deg); }
+.theme-toggle[aria-pressed='true'] { color: var(--accent-gold); }
+
+/* ---------- Tap targets ≥ 44px ---------- */
+.nav-link, .nav-cta { min-height: 44px; display: inline-flex; align-items: center; }
+.navbar__hello { min-height: 44px; display: inline-flex; align-items: center; }
+.navbar__toggle { min-width: 44px; min-height: 44px; }
+.navbar__brand { min-height: 44px; }
+
+@media (max-width: 960px) {
+  .theme-toggle { order: 0; margin-left: auto; }
+  .navbar__toggle { margin-left: 0; display: grid; place-items: center; }
+  .navbar__inner { gap: 0.6rem; }
+  .nav-link, .nav-cta { display: flex; }
+  .nav-cta { justify-content: center; }
+  .navbar__nav { max-height: calc(100dvh - 64px); overflow-y: auto; }
+}
+@media (max-width: 380px) {
+  .navbar__wordmark { font-size: 1.02rem; }
+  .dan-logo { width: 40px; height: 40px; }
+  .navbar__inner { padding-left: 0.9rem; padding-right: 0.9rem; }
+}
+
+/* ---------- Dark theme ---------- */
+[data-theme='dark'] .navbar { background: var(--nav-bg); box-shadow: 0 1px 0 rgba(140, 194, 255, 0.12), 0 2px 14px rgba(0, 0, 0, 0.5); }
+@media (max-width: 960px) {
+  [data-theme='dark'] .navbar__nav { background: var(--nav-bg); }
+}
+[data-theme='dark'] .nav-cta:hover,
+[data-theme='dark'] .nav-cta--active { background: #d6e6fa; }
+
+/* ---------- Bag icon (Worker E) ---------- */
+.nav-bag {
+  order: 2;
+  position: relative;
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.nav-bag:hover { background: rgba(255, 255, 255, 0.18); }
+.nav-bag:focus-visible { outline: 3px solid var(--focus-ring-on-dark); outline-offset: 2px; }
+.nav-bag__count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent-gold);
+  color: #002147;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: 0 0 0 2px var(--nav-bg);
+}
+@media (max-width: 960px) {
+  .nav-bag { order: 0; }
+}
+
+/* ---------- Seasonal touches (design system) ---------- */
+/* A hairline in the season's accent along the bottom edge of the bar. */
+.navbar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--season-accent) 20%, var(--season-accent) 80%, transparent);
+  opacity: 0.75;
+  pointer-events: none;
+}
+.nav-link { transition: background-color 0.15s ease, color 0.15s ease; }
+.nav-link--active::after { animation: nav-underline-in 0.35s var(--ease-out) both; transform-origin: left center; }
+@keyframes nav-underline-in {
+  from { transform: scaleX(0.3); opacity: 0; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-link--active::after { animation: none; }
+}

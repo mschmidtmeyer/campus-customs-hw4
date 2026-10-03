@@ -1,0 +1,69 @@
+.wish-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 2px solid var(--yale-blue-mid);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--yale-blue-mid);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.wish-btn:hover { transform: translateY(-1px); border-color: var(--yale-blue); }
+.wish-btn:focus-visible { outline: 3px solid var(--yale-blue-light); outline-offset: 2px; }
+
+.wish-btn__heart {
+  width: 1.15em;
+  height: 1.15em;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  transition: fill 0.15s ease;
+}
+.wish-btn.is-saved .wish-btn__heart { fill: currentColor; }
+.wish-btn__heart--pop { animation: wish-pop 0.35s ease-out; }
+@keyframes wish-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* Small: round overlay on a product card image */
+.wish-btn--sm {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-width: 1px;
+  border-color: var(--line);
+  box-shadow: 0 2px 8px rgba(0, 53, 107, 0.15);
+  font-size: 1.05rem;
+}
+.wish-btn--sm.is-saved { color: var(--yale-blue); border-color: var(--yale-blue-mid); }
+
+/* Large: pill on the product page */
+.wish-btn--lg { min-height: 48px; padding: 0.6rem 1.3rem; font-size: 1rem; }
+.wish-btn--lg.is-saved { background: var(--yale-blue); border-color: var(--yale-blue); color: #fff; }
+
+.visually-hidden-wish {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+[data-theme='dark'] .wish-btn { color: var(--link); border-color: var(--link); }
+[data-theme='dark'] .wish-btn--sm { background: var(--surface); border-color: var(--line); }
+[data-theme='dark'] .wish-btn--sm.is-saved { color: var(--heading); border-color: var(--heading); }
+[data-theme='dark'] .wish-btn--lg.is-saved { background: #1d5fae; border-color: #1d5fae; color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wish-btn, .wish-btn__heart { transition: none; }
+  .wish-btn:hover { transform: none; }
+  .wish-btn__heart--pop { animation: none; }
+}

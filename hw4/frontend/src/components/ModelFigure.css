@@ -1,0 +1,559 @@
+/* ==========================================================================
+   ModelFigure — an illustrated person wearing the real product photo.
+   1 unit = 1cqw of the figure; the figure is 100 × 200 units.
+   ========================================================================== */
+.mf {
+  --mf-skin: #e6b48f;
+  --mf-hair: #3b2a20;
+  --mf-pants: #3d5f8e;
+  --mf-shoe: #ffffff;
+  --mf-accent: #00356b;
+  --mf-skin-shade: color-mix(in srgb, var(--mf-skin) 80%, #3b1f12);
+  --mf-pants-shade: color-mix(in srgb, var(--mf-pants) 78%, #0b1626);
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 2;
+  container-type: inline-size;
+  user-select: none;
+}
+.mf__body,
+.mf__body > *,
+.mf__head > *,
+.mf__leg > *,
+.mf__arm > * { position: absolute; display: block; }
+.mf__body {
+  inset: 0;
+  transform-origin: 50% 94%;
+  animation:
+    mf-in 0.5s ease-out both,
+    mf-sway 6.5s ease-in-out var(--mf-delay, 0s) infinite;
+}
+
+.mf__ghost {
+  position: absolute;
+  left: 31cqw;
+  top: 8cqw;
+  width: 38cqw;
+  height: 178cqw;
+  border-radius: 19cqw 19cqw 8cqw 8cqw;
+  background: rgba(0, 53, 107, 0.07);
+  animation: mf-pulse 1.4s ease-in-out infinite;
+}
+
+.mf__shadow {
+  left: 16cqw;
+  top: 184cqw;
+  width: 68cqw;
+  height: 10cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 33, 71, 0.3), rgba(0, 33, 71, 0));
+}
+
+/* ---- legs (jeans / chinos) + sneakers ---- */
+.mf__leg { width: 16cqw; transform-origin: 50% 0; }
+.mf__leg--l { left: 34cqw; }
+.mf__leg--r { left: 50cqw; }
+.mf__pant {
+  inset: 0;
+  background: linear-gradient(90deg, var(--mf-pants-shade) 0 7%, var(--mf-pants) 20% 80%, var(--mf-pants-shade) 93%);
+  clip-path: polygon(2% 0, 98% 0, 88% 100%, 12% 100%);
+}
+.mf__pant::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3.4cqw;
+  background: var(--mf-pants-shade);
+  box-shadow: inset 0 0.6cqw 0 rgba(255, 255, 255, 0.18);
+}
+.mf__leg--l .mf__pant { box-shadow: inset -0.5cqw 0 0 rgba(0, 0, 0, 0.12); }
+.mf__shoe {
+  bottom: -5.5cqw;
+  width: 21cqw;
+  height: 8.5cqw;
+  border-radius: 55% 45% 24% 24% / 75% 65% 32% 32%;
+  background: linear-gradient(to bottom, var(--mf-shoe) 0 64%, #c9d3df 64% 76%, #eef2f6 76%);
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0, 33, 71, 0.18);
+}
+.mf__leg--l .mf__shoe { left: -5.5cqw; }
+.mf__leg--r .mf__shoe { left: 0.5cqw; border-radius: 45% 55% 24% 24% / 65% 75% 32% 32%; }
+.mf__shoe::after {
+  content: '';
+  position: absolute;
+  left: 26%;
+  top: 30%;
+  width: 46%;
+  height: 1.5cqw;
+  border-radius: 1cqw;
+  background: var(--mf-accent);
+  rotate: -9deg;
+}
+.mf__leg--r .mf__shoe::after { rotate: 9deg; }
+
+.mf--walk .mf__leg--l { rotate: 7deg; animation: mf-step-l 3.2s ease-in-out var(--mf-delay, 0s) infinite; }
+.mf--walk .mf__leg--r { rotate: -5deg; animation: mf-step-r 3.2s ease-in-out var(--mf-delay, 0s) infinite; }
+
+/* ---- arms / hands (behind the garment, so sleeves and cuffs overlap them) ---- */
+.mf__arm {
+  width: 7.6cqw;
+  border-radius: 4cqw;
+  transform-origin: 50% 0;
+  background: linear-gradient(90deg, var(--mf-skin-shade), var(--mf-skin) 30% 70%, var(--mf-skin-shade));
+}
+.mf__hand {
+  width: 8.4cqw;
+  height: 9.6cqw;
+  border-radius: 45% 45% 50% 50%;
+  background: var(--mf-skin);
+  box-shadow: inset -0.7cqw -0.6cqw 0 var(--mf-skin-shade);
+}
+.mf__arm > .mf__hand { left: 50%; bottom: -5.5cqw; translate: -50% 0; }
+
+/* ---- the real product photo ---- */
+.mf__garment {
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+  filter: drop-shadow(0 1.2cqw 1.4cqw rgba(0, 33, 71, 0.2));
+}
+/* Fallback (photo could not be cut out): blend the white background away on the light card. */
+.mf__garment--blend { mix-blend-mode: multiply; filter: none; }
+
+/* ---- neck + head ---- */
+.mf__neck {
+  left: 45cqw;
+  top: 30cqw;
+  width: 10cqw;
+  height: 13cqw;
+  border-radius: 0 0 5cqw 5cqw / 0 0 3cqw 3cqw;
+  background: linear-gradient(to bottom, var(--mf-skin-shade) 0 28%, var(--mf-skin) 58%);
+}
+.mf__head {
+  left: 37.5cqw;
+  top: 6cqw;
+  width: 25cqw;
+  height: 29cqw;
+  border-radius: 48% 48% 44% 44% / 46% 46% 54% 54%;
+  background: radial-gradient(circle at 38% 34%, color-mix(in srgb, var(--mf-skin) 88%, #fff), var(--mf-skin) 60%);
+  transform-origin: 50% 96%;
+  animation: mf-nod 6.5s ease-in-out var(--mf-delay, 0s) infinite;
+}
+.mf__ear {
+  top: 44%;
+  width: 14%;
+  height: 21%;
+  border-radius: 50%;
+  background: var(--mf-skin);
+  box-shadow: inset 0 0 0 0.6cqw var(--mf-skin-shade);
+}
+.mf__ear--l { left: -8%; }
+.mf__ear--r { right: -8%; }
+.mf__brow {
+  top: 40%;
+  width: 16%;
+  height: 7%;
+  border-top: 0.9cqw solid var(--mf-hair);
+  border-radius: 50% 50% 0 0;
+  opacity: 0.85;
+}
+.mf__brow--l { left: 23%; }
+.mf__brow--r { right: 23%; }
+.mf__eye {
+  top: 49%;
+  width: 9%;
+  height: 8.5%;
+  border-radius: 50%;
+  background: #2a1d17;
+  box-shadow: inset 0.35cqw -0.3cqw 0 #6b5146;
+  animation: mf-blink 5.6s ease-in-out var(--mf-delay, 0s) infinite;
+}
+.mf__eye--l { left: 29%; }
+.mf__eye--r { right: 29%; }
+.mf__cheek {
+  top: 61%;
+  width: 15%;
+  height: 9%;
+  border-radius: 50%;
+  background: rgba(236, 112, 99, 0.26);
+}
+.mf__cheek--l { left: 15%; }
+.mf__cheek--r { right: 15%; }
+.mf__smile {
+  left: 39%;
+  top: 67%;
+  width: 22%;
+  height: 9%;
+  border-bottom: 0.9cqw solid #8a3b2e;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
+/* ---- hair styles (front piece lives in the head; .mf__hair-back sits behind the body) ---- */
+.mf__hair,
+.mf__hair-back,
+.mf__hair::before,
+.mf__hair::after { background: var(--mf-hair); }
+.mf__hair-back { display: none; }
+.mf__hair { box-shadow: inset 0 -0.6cqw 0 rgba(255, 255, 255, 0.08); }
+
+/* 0 · short crop with a side part */
+.mf--hair-crop .mf__hair {
+  top: -7%;
+  left: -5%;
+  width: 110%;
+  height: 44%;
+  border-radius: 52% 48% 30% 36% / 82% 80% 24% 30%;
+}
+.mf--hair-crop .mf__hair::after {
+  content: '';
+  position: absolute;
+  left: 58%;
+  bottom: -14%;
+  width: 34%;
+  height: 40%;
+  border-radius: 0 0 60% 40%;
+}
+
+/* 1 · long, framing the face */
+.mf--hair-long .mf__hair {
+  top: -6%;
+  left: -7%;
+  width: 114%;
+  height: 40%;
+  border-radius: 50% 50% 14% 14% / 86% 86% 18% 18%;
+}
+.mf--hair-long .mf__hair::before,
+.mf--hair-long .mf__hair::after {
+  content: '';
+  position: absolute;
+  top: 60%;
+  width: 17%;
+  height: 165%;
+  border-radius: 40% 10% 40% 50%;
+}
+.mf--hair-long .mf__hair::before { left: 0; }
+.mf--hair-long .mf__hair::after { right: 0; border-radius: 10% 40% 50% 40%; }
+.mf--hair-long .mf__hair-back {
+  display: block;
+  left: 33cqw;
+  top: 9cqw;
+  width: 34cqw;
+  height: 50cqw;
+  border-radius: 42% 42% 22% 22% / 30% 30% 12% 12%;
+}
+
+/* 2 · big curls */
+.mf--hair-curls .mf__hair {
+  top: -20%;
+  left: -15%;
+  width: 130%;
+  height: 58%;
+  border-radius: 50% 50% 36% 36% / 64% 64% 36% 36%;
+}
+.mf--hair-curls .mf__hair::before,
+.mf--hair-curls .mf__hair::after {
+  content: '';
+  position: absolute;
+  top: 34%;
+  width: 34%;
+  height: 62%;
+  border-radius: 50%;
+}
+.mf--hair-curls .mf__hair::before { left: -6%; }
+.mf--hair-curls .mf__hair::after { right: -6%; }
+.mf--hair-curls .mf__hair-back {
+  display: block;
+  left: 31cqw;
+  top: 2cqw;
+  width: 38cqw;
+  height: 30cqw;
+  border-radius: 50%;
+}
+
+/* 3 · top bun */
+.mf--hair-bun .mf__hair,
+.mf--hair-pony .mf__hair {
+  top: -6%;
+  left: -5%;
+  width: 110%;
+  height: 42%;
+  border-radius: 50% 50% 26% 26% / 86% 86% 22% 22%;
+}
+.mf--hair-bun .mf__hair::after {
+  content: '';
+  position: absolute;
+  left: 32%;
+  top: -36%;
+  width: 36%;
+  height: 46%;
+  border-radius: 50%;
+  box-shadow: inset 0 -0.8cqw 0 rgba(0, 0, 0, 0.15);
+}
+
+/* 4 · swinging ponytail with a Yale-blue tie */
+.mf--hair-pony .mf__hair-back {
+  display: block;
+  left: 57cqw;
+  top: 11cqw;
+  width: 10cqw;
+  height: 30cqw;
+  border-radius: 50% 50% 45% 45% / 26% 26% 74% 74%;
+  transform-origin: 30% 4%;
+  rotate: 14deg;
+  animation: mf-pony 3.4s ease-in-out var(--mf-delay, 0s) infinite;
+}
+.mf--hair-pony .mf__hair-back::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  top: 6%;
+  width: 84%;
+  height: 2.4cqw;
+  border-radius: 1cqw;
+  background: var(--mf-accent);
+}
+
+/* 5 · chin-length bob with bangs */
+.mf--hair-bob .mf__hair {
+  top: -7%;
+  left: -8%;
+  width: 116%;
+  height: 46%;
+  border-radius: 50% 50% 18% 18% / 84% 84% 18% 18%;
+}
+.mf--hair-bob .mf__hair-back {
+  display: block;
+  left: 34cqw;
+  top: 5cqw;
+  width: 32cqw;
+  height: 29cqw;
+  border-radius: 46% 46% 14% 14% / 52% 52% 14% 14%;
+}
+
+@keyframes mf-in {
+  from { opacity: 0; translate: 0 2cqw; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes mf-sway {
+  0%, 100% { rotate: -0.8deg; }
+  50% { rotate: 0.8deg; }
+}
+@keyframes mf-nod {
+  0%, 100% { rotate: 2deg; }
+  50% { rotate: -2deg; }
+}
+@keyframes mf-blink {
+  0%, 93%, 100% { scale: 1 1; }
+  96% { scale: 1 0.1; }
+}
+@keyframes mf-pony {
+  0%, 100% { rotate: 14deg; }
+  50% { rotate: 5deg; }
+}
+@keyframes mf-step-l {
+  0%, 100% { rotate: 7deg; }
+  50% { rotate: 4deg; }
+}
+@keyframes mf-step-r {
+  0%, 100% { rotate: -5deg; }
+  50% { rotate: -2deg; }
+}
+@keyframes mf-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ==========================================================================
+   SeasonBackdrop — light seasonal card behind a figure (stays light in dark
+   mode so the figure — and the multiply fallback — always read well).
+   ========================================================================== */
+.sb {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--sb-sky);
+  color: var(--sb-ink);
+  pointer-events: none;
+}
+.sb > * { position: absolute; display: block; }
+.sb--fall {
+  --sb-sky: linear-gradient(180deg, #e2edfa 0%, #f6e8da 58%, #f1d5b4 100%);
+  --sb-ink: rgba(0, 53, 107, 0.2);
+  --sb-ground: #e8c79c;
+  --sb-tree-a: #e38a3a;
+  --sb-tree-b: #c4532a;
+  --sb-window: rgba(255, 233, 196, 0.8);
+}
+.sb--winter {
+  --sb-sky: linear-gradient(180deg, #d4e4f6 0%, #e9f1fb 58%, #f7faff 100%);
+  --sb-ink: rgba(0, 53, 107, 0.24);
+  --sb-ground: #ffffff;
+  --sb-tree-a: #c9d8ea;
+  --sb-tree-b: #e3ecf7;
+  --sb-window: rgba(255, 205, 110, 0.9);
+}
+.sb--spring {
+  --sb-sky: linear-gradient(180deg, #dfedfc 0%, #f4ebf4 60%, #e4f1df 100%);
+  --sb-ink: rgba(0, 53, 107, 0.18);
+  --sb-ground: #cde4c2;
+  --sb-tree-a: #f3b3ca;
+  --sb-tree-b: #9ccd8c;
+  --sb-window: rgba(255, 255, 255, 0.65);
+}
+.sb--summer {
+  --sb-sky: linear-gradient(180deg, #c6e1fb 0%, #e5f2fd 56%, #f5eed7 100%);
+  --sb-ink: rgba(0, 53, 107, 0.2);
+  --sb-ground: #d2e8c1;
+  --sb-tree-a: #6db068;
+  --sb-tree-b: #4c9750;
+  --sb-window: rgba(255, 255, 255, 0.6);
+}
+
+.sb__campus {
+  left: -4%;
+  bottom: 6%;
+  width: 108%;
+  height: auto;
+  max-width: none;
+  transition: translate 0.5s ease-out;
+  translate: calc(var(--px, 0) * -7px) calc(var(--py, 0) * -3px);
+}
+.sb__stone { fill: currentColor; }
+.sb__windows { fill: var(--sb-window); }
+.sb__snowcap { display: none; fill: none; stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.sb--winter .sb__snowcap { display: inline; }
+.sb__trunk { fill: rgba(0, 33, 71, 0.28); }
+.sb__leaf-a { fill: var(--sb-tree-a); opacity: 0.85; }
+.sb__leaf-b { fill: var(--sb-tree-b); opacity: 0.8; }
+
+.sb__ground {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13%;
+  background: linear-gradient(to bottom, transparent, var(--sb-ground) 45%);
+}
+
+.sb__glow {
+  left: -20%;
+  bottom: 0;
+  width: 90%;
+  height: 55%;
+  background: radial-gradient(closest-side, rgba(255, 196, 120, 0.45), transparent);
+}
+
+/* falling snow / leaves / petals: full-height lanes, so translate % = card height */
+.sb__fx {
+  inset: 0;
+  transition: translate 0.5s ease-out;
+  translate: calc(var(--px, 0) * -12px) 0;
+}
+.sb__p {
+  position: absolute;
+  top: 0;
+  left: calc(4% + var(--i) * 10.5%);
+  width: 0;
+  height: 100%;
+  animation: sb-fall calc(9s + var(--i) * 0.75s) linear calc(var(--i) * -1.9s) infinite;
+}
+.sb__p::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+}
+.sb--winter .sb__p::before { box-shadow: 0 0 4px rgba(0, 53, 107, 0.25); }
+.sb--winter .sb__p:nth-child(3n)::before { width: 9px; height: 9px; }
+.sb--winter .sb__p:nth-child(3n + 1)::before { width: 4px; height: 4px; opacity: 0.85; }
+.sb--fall .sb__p::before {
+  width: 10px;
+  height: 10px;
+  border-radius: 0 80% 0 80%;
+  background: linear-gradient(135deg, #f0a443, #c4501f);
+  animation: sb-spin 3.6s linear infinite;
+}
+.sb--fall .sb__p:nth-child(3n)::before { background: linear-gradient(135deg, #e7c04a, #d17a26); width: 8px; height: 8px; }
+.sb--fall .sb__p:nth-child(3n + 1)::before { background: linear-gradient(135deg, #d4532b, #9c2f17); }
+.sb--spring .sb__p::before {
+  width: 9px;
+  height: 6px;
+  border-radius: 80% 0 80% 0;
+  background: #f6b6cd;
+  animation: sb-spin 4.8s linear infinite;
+}
+.sb--spring .sb__p:nth-child(2n)::before { background: #fbd3e1; }
+
+.sb__sun {
+  top: 6%;
+  right: 9%;
+  width: 17%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #fff7d6, #ffd76e 62%, #ffc844);
+  box-shadow: 0 0 2rem 0.5rem rgba(255, 214, 107, 0.55);
+}
+.sb__sun::before {
+  content: '';
+  position: absolute;
+  inset: -60%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(rgba(255, 205, 96, 0.4) 0deg 7deg, transparent 7deg 24deg);
+  -webkit-mask: radial-gradient(circle, transparent 33%, #000 36%, transparent 72%);
+  mask: radial-gradient(circle, transparent 33%, #000 36%, transparent 72%);
+  animation: sb-spin 40s linear infinite;
+}
+.sb__cloud {
+  top: 15%;
+  left: 7%;
+  width: 28%;
+  height: 4.5%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  animation: sb-drift 16s ease-in-out infinite alternate;
+}
+.sb__cloud::before {
+  content: '';
+  position: absolute;
+  left: 22%;
+  bottom: 35%;
+  width: 42%;
+  height: 190%;
+  border-radius: 50%;
+  background: inherit;
+}
+.sb__cloud--2 { top: 26%; left: 56%; width: 20%; opacity: 0.75; animation-duration: 22s; animation-delay: -7s; }
+
+@keyframes sb-fall {
+  0% { translate: 0 0; }
+  50% { translate: 14px 52%; }
+  100% { translate: -6px 106%; }
+}
+@keyframes sb-spin {
+  to { rotate: 360deg; }
+}
+@keyframes sb-drift {
+  from { translate: -10px 0; }
+  to { translate: 16px 0; }
+}
+
+[data-theme='dark'] .sb { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mf,
+  .mf *,
+  .mf *::before,
+  .mf *::after,
+  .sb *,
+  .sb *::before { animation: none !important; transition: none !important; }
+  .sb__p { translate: calc(var(--i) * 3px) calc(8% + var(--i) * 8.5%); }
+  .sb__campus,
+  .sb__fx { translate: none; }
+}

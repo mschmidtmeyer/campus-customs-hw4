@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Campus Customs — officially licensed Yale apparel on Broadway, New Haven." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#00356b" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1626" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Campus Customs" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/app-icon.svg" />
+    <title>Campus Customs | Yale Merch, New Haven</title>
+    <script>
+      // Set the theme before first paint (no light/dark flash) and arm reveal-on-scroll.
+      ;(function () {
+        var d = document.documentElement
+        var t = null
+        try { t = localStorage.getItem('cc-theme') } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        if (t === 'dark') d.setAttribute('data-theme', 'dark')
+        // Season accent before first paint: ?season= preview, else today's (same rule as seasonForDate()).
+        var s = null
+        try { s = new URLSearchParams(location.search).get('season') } catch (e) {}
+        if (['winter', 'spring', 'summer', 'fall'].indexOf(s) < 0) {
+          var m = new Date().getMonth()
+          s = m === 11 || m <= 1 ? 'winter' : m <= 4 ? 'spring' : m <= 7 ? 'summer' : 'fall'
+        }
+        d.setAttribute('data-season', s)
+        // Home hero: start fetching only this season's campus photo (path matches public/campus/photos.json).
+        if (location.pathname === '/') {
+          var l = document.createElement('link')
+          l.rel = 'preload'
+          l.as = 'image'
+          l.href = '/campus/' + s + '.jpg'
+          l.setAttribute('fetchpriority', 'high')
+          document.head.appendChild(l)
+        }
+        if (window.matchMedia && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+          d.classList.add('js-reveal')
+          // Failsafe: if the app never boots, un-hide the content.
+          setTimeout(function () { if (!window.__ccReveal) d.classList.remove('js-reveal') }, 3000)
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+fastapi==0.142.2
+uvicorn[standard]==0.54.0
+pydantic-ai-slim[openai]>=1.0.0
+openai>=1.40.0
+python-dotenv>=1.0.1
+httpx>=0.27.0
+cryptography>=44.0.0
+pillow>=10  # scripts/clean_product_images.py (image prep, not needed at runtime)

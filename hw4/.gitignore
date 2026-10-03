@@ -1,0 +1,33 @@
+# Secrets — never commit real keys
+.env
+.env.*
+!.env.example
+backend/.env
+
+# Local data pack (not in git): the database and the product images
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Node / Vite
+node_modules/
+dist/
+*.local
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Workspace leftovers
+joke.txt

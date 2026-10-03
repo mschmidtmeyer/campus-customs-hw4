@@ -1,0 +1,327 @@
+/* ==========================================================================
+   CampusScene — layered SVG campus + CSS particles. Colors per season below.
+   Motion: particles/clouds animate `transform`/`opacity` only; the scroll
+   parallax writes `translate` on .cs-layer. Image boxes never resize.
+   ========================================================================== */
+
+.campus-scene {
+  position: relative;
+  overflow: hidden;
+  min-height: 0; /* no isolation: the photo credit (z-index 3) must sit above a host's scrim */
+  background: #0b2547; /* visible only while the first frame fades in */
+}
+.cs-stage,
+.cs-frame,
+.cs-layer,
+.cs-clouds,
+.cs-tint,
+.cs-particles { position: absolute; inset: 0; }
+.cs-frame.is-current { animation: cs-frame-in 0.9s var(--ease-out, ease-out) both; }
+@keyframes cs-frame-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.cs-layer:not([data-depth='0']) { will-change: translate; }
+.cs-layer > svg { display: block; width: 100%; height: 100%; }
+.cs-tint { pointer-events: none; background: var(--cs-tint, none); }
+
+/* ---------- SVG paint (all colors are season variables) ---------- */
+.cs-sky0 { stop-color: var(--cs-sky0); }
+.cs-sky1 { stop-color: var(--cs-sky1); }
+.cs-sky2 { stop-color: var(--cs-sky2); }
+.cs-sky3 { stop-color: var(--cs-sky3); }
+.cs-glow0 { stop-color: var(--cs-glow); }
+.cs-glow1 { stop-color: var(--cs-glow); stop-opacity: 0; }
+.cs-orb { fill: var(--cs-orb); }
+.cs-crater { fill: var(--cs-crater, transparent); }
+.cs-star { fill: #ffffff; opacity: 0.8; }
+.cs-far { fill: var(--cs-far); }
+.cs-far2 { fill: var(--cs-far2); }
+.cs-mid { fill: var(--cs-mid); }
+.cs-mid-dark { fill: var(--cs-mid-dark); }
+.cs-trim { fill: var(--cs-trim); }
+.cs-win { fill: var(--cs-win); }
+.cs-win.cs-win--lit { fill: var(--cs-win-lit); }
+.cs-louver { fill: none; stroke: var(--cs-mid-dark); stroke-width: 3; }
+.cs-near { fill: var(--cs-near); }
+.cs-near-dark { fill: var(--cs-near-dark); }
+.cs-near-trim { fill: var(--cs-near-trim); }
+.cs-arch { fill: var(--cs-arch); }
+.cs-iron { fill: var(--cs-iron); }
+.cs-iron-line { fill: none; stroke: var(--cs-iron); stroke-width: 2; }
+.cs-glass { fill: var(--cs-glass); }
+.cs-lamp-glow { fill: var(--cs-lamp-glow, transparent); }
+.cs-lawn { fill: var(--cs-lawn); }
+.cs-ground { fill: var(--cs-ground); }
+.cs-ground-hi { fill: var(--cs-ground-hi); }
+.cs-ground-shade { fill: var(--cs-ground-shade); }
+.cs-path { fill: var(--cs-path); }
+.cs-hedge { fill: var(--cs-hedge); }
+.cs-hedge-hi { fill: var(--cs-hedge-hi); }
+.cs-trunk { fill: var(--cs-trunk); }
+.cs-limb { fill: none; stroke: var(--cs-trunk); stroke-linecap: round; stroke-linejoin: round; }
+.cs-ca1 { fill: var(--cs-ca1); }
+.cs-ca2 { fill: var(--cs-ca2); }
+.cs-ca3 { fill: var(--cs-ca3); }
+.cs-cb1 { fill: var(--cs-cb1); }
+.cs-cb2 { fill: var(--cs-cb2); }
+.cs-cb3 { fill: var(--cs-cb3); }
+.cs-bloom { fill: var(--cs-bloom); }
+.cs-leafdot { fill: var(--cs-leafdot); opacity: 0.85; }
+.cs-flower1 { fill: var(--cs-flower1); }
+.cs-flower2 { fill: var(--cs-flower2); }
+.cs-grass { fill: none; stroke: var(--cs-grass); stroke-linecap: round; }
+.cs-litter1 { fill: var(--cs-litter1); }
+.cs-litter2 { fill: var(--cs-litter2); }
+.cs-litter3 { fill: var(--cs-litter3); }
+.cs-snow { fill: var(--cs-snow, #f4f8fe); }
+.cs-snow-line { fill: none; stroke: var(--cs-snow, #f4f8fe); stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Clouds (drift slowly; compositor-only) ---------- */
+.cs-cloud {
+  position: absolute;
+  left: var(--cx);
+  top: var(--cy);
+  width: var(--cw);
+  opacity: var(--co, 1);
+  animation: cs-cloud var(--cd, 90s) ease-in-out infinite alternate;
+}
+.cs-cloud svg { display: block; width: 100%; height: auto; fill: var(--cs-cloud); }
+@keyframes cs-cloud {
+  from { transform: translate3d(-3vw, 0, 0); }
+  to { transform: translate3d(3vw, 0, 0); }
+}
+
+/* ---------- Seasons ---------- */
+.cs--winter {
+  --cs-sky0: #0a1f44; --cs-sky1: #1f4a85; --cs-sky2: #6d90c4; --cs-sky3: #c4d6ee;
+  --cs-glow: rgba(214, 230, 255, 0.5); --cs-orb: #f3f7ff; --cs-crater: rgba(150, 174, 210, 0.35);
+  --cs-cloud: #9db6dc;
+  --cs-far: #5a78a8; --cs-far2: #4a6896;
+  --cs-mid: #1d4275; --cs-mid-dark: #143461; --cs-trim: #36639b;
+  --cs-win: #10305a; --cs-win-lit: #ffd27a;
+  --cs-near: #133863; --cs-near-dark: #0d2c52; --cs-near-trim: #2b5891; --cs-arch: #ffcf7c;
+  --cs-iron: #0a1d3a; --cs-glass: #ffe2a0; --cs-lamp-glow: rgba(255, 210, 120, 0.28);
+  --cs-lawn: #d7e4f3; --cs-ground: #eef4fb; --cs-ground-hi: #ffffff; --cs-ground-shade: #c9d9ec; --cs-path: #d6e2f0;
+  --cs-hedge: #23466a; --cs-hedge-hi: #f4f8fd;
+  --cs-trunk: #1b2a42; --cs-snow: #f4f8fe;
+  --cs-tint: linear-gradient(180deg, transparent 55%, rgba(10, 31, 68, 0.16));
+}
+.cs--spring {
+  --cs-sky0: #3f7fcc; --cs-sky1: #86b8ea; --cs-sky2: #cfe2f6; --cs-sky3: #fbe2ea;
+  --cs-glow: rgba(255, 243, 214, 0.7); --cs-orb: #fff7dc;
+  --cs-cloud: #ffffff;
+  --cs-far: #a6c0e2; --cs-far2: #95b3dc;
+  --cs-mid: #3767a6; --cs-mid-dark: #2b5893; --cs-trim: #5d8bc6;
+  --cs-win: #c4daf4; --cs-win-lit: #e4effb;
+  --cs-near: #295690; --cs-near-dark: #214a7f; --cs-near-trim: #4d7bb8; --cs-arch: #eaf4dc;
+  --cs-iron: #173257; --cs-glass: #e8f1fb;
+  --cs-lawn: #93cc8c; --cs-ground: #86c486; --cs-ground-hi: #a9d9a2; --cs-ground-shade: #6eaf72; --cs-path: #ece2d2;
+  --cs-hedge: #4f9a60; --cs-hedge-hi: #78bb7c;
+  --cs-trunk: #3d3548;
+  --cs-ca1: #fcd6e3; --cs-ca2: #f5a9c5; --cs-ca3: #e68aae; /* magnolias */
+  --cs-cb1: #c2e597; --cs-cb2: #98cf7b; --cs-cb3: #74b267; /* fresh elm leaves */
+  --cs-bloom: #fff6f9; --cs-flower1: #f7a8c5; --cs-flower2: #ffffff;
+  --cs-tint: radial-gradient(80% 45% at 50% 78%, rgba(255, 214, 228, 0.2), transparent 70%);
+}
+.cs--summer {
+  --cs-sky0: #1a64b8; --cs-sky1: #57a0e4; --cs-sky2: #b2d5f2; --cs-sky3: #ffe1a1;
+  --cs-glow: rgba(255, 222, 140, 0.75); --cs-orb: #fff2c0;
+  --cs-cloud: #ffffff;
+  --cs-far: #8fb4dc; --cs-far2: #80a8d3;
+  --cs-mid: #255a9a; --cs-mid-dark: #1d4b85; --cs-trim: #487cbc;
+  --cs-win: #b3d1f1; --cs-win-lit: #ffe7a6;
+  --cs-near: #1c4d88; --cs-near-dark: #164277; --cs-near-trim: #3e70b0; --cs-arch: #ffe8ad;
+  --cs-iron: #102a4d; --cs-glass: #fff1c4; --cs-lamp-glow: rgba(255, 222, 140, 0.16);
+  --cs-lawn: #5ea867; --cs-ground: #519d5c; --cs-ground-hi: #75b878; --cs-ground-shade: #3f8a4e; --cs-path: #ead9b3;
+  --cs-hedge: #2e6c42; --cs-hedge-hi: #47885a;
+  --cs-trunk: #2b2a33;
+  --cs-ca1: #62b066; --cs-ca2: #3f8f4f; --cs-ca3: #2b6f40;
+  --cs-cb1: #7cc06a; --cs-cb2: #4f9d56; --cs-cb3: #357b46;
+  --cs-grass: #3b8449;
+  --cs-tint: radial-gradient(60% 55% at 77% 16%, rgba(255, 214, 120, 0.3), transparent 70%);
+}
+.cs--fall {
+  --cs-sky0: #1d4683; --cs-sky1: #5a7db6; --cs-sky2: #d9a690; --cs-sky3: #f6b273;
+  --cs-glow: rgba(255, 184, 106, 0.7); --cs-orb: #ffd9a0;
+  --cs-cloud: #ffd9c4;
+  --cs-far: #8791b4; --cs-far2: #7883aa;
+  --cs-mid: #21467b; --cs-mid-dark: #193a69; --cs-trim: #42679d;
+  --cs-win: #2c5288; --cs-win-lit: #ffcd78;
+  --cs-near: #173b6a; --cs-near-dark: #12325b; --cs-near-trim: #36609a; --cs-arch: #ffc887;
+  --cs-iron: #0d2340; --cs-glass: #ffe0a3; --cs-lamp-glow: rgba(255, 196, 120, 0.26);
+  --cs-lawn: #8f9b57; --cs-ground: #83914f; --cs-ground-hi: #a5aa61; --cs-ground-shade: #6d7a42; --cs-path: #e4d0ae;
+  --cs-hedge: #6d6a36; --cs-hedge-hi: #9a8640;
+  --cs-trunk: #2c2430;
+  --cs-ca1: #f7a24e; --cs-ca2: #e8743b; --cs-ca3: #c4452b;
+  --cs-cb1: #f8cb5c; --cs-cb2: #eca23a; --cs-cb3: #cf7a2c;
+  --cs-leafdot: #ffd07a;
+  --cs-litter1: #e2733a; --cs-litter2: #c8462b; --cs-litter3: #f2b04a;
+  --cs-tint: radial-gradient(70% 50% at 88% 46%, rgba(255, 160, 80, 0.24), transparent 70%);
+}
+
+/* ---------- Photo mode: real photo in a pinned box, illustrated skyline behind ----------
+   The box is fixed in size (inset + overflow hidden + min-height 0); only the inner
+   .cs-photo-drift layer moves, with a slow translate (Ken-Burns-style drift). Hosts can set
+   --cs-photo-left / --cs-photo-fade to start the photo further right and fade it in. */
+.cs-frame.has-photo { background: #001a38; }
+.cs-ghost1 { fill: #0a2448; }
+.cs-ghost2 { fill: #0d2b54; }
+.cs-ghost3 { fill: #10325f; }
+.cs-photo-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: var(--cs-photo-left, 0px);
+  min-height: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--cs-photo-fade, 0px));
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--cs-photo-fade, 0px));
+  will-change: translate;
+}
+.cs-photo-drift {
+  position: absolute;
+  inset: -3% -4%;
+  animation: cs-drift 38s ease-in-out infinite alternate;
+}
+.cs-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--cs-photo-pos, 50% 50%);
+}
+.cs--winter { --cs-photo-pos: 50% 62%; }
+.cs--spring { --cs-photo-pos: 40% 40%; }
+.cs--summer { --cs-photo-pos: 0% 38%; } /* keeps Harkness Tower right of the headline */
+.cs--fall { --cs-photo-pos: 55% 50%; }
+@keyframes cs-drift {
+  from { transform: translate3d(-1.6%, 1%, 0); }
+  to { transform: translate3d(1.6%, -1%, 0); }
+}
+.cs-photo-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 21, 46, 0.24), transparent 24%, transparent 60%, rgba(0, 21, 46, 0.62)),
+    linear-gradient(90deg, rgba(0, 53, 107, 0.14), rgba(0, 53, 107, 0.04));
+}
+.cs-credit {
+  position: absolute;
+  right: var(--cs-credit-right, 0.75rem);
+  bottom: var(--cs-credit-bottom, 0.6rem);
+  z-index: 3;
+  max-width: min(92%, 36rem);
+  margin: 0;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(0, 21, 46, 0.8);
+  color: #ffffff;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  text-align: right;
+}
+.cs-credit a { color: #ffffff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.55); text-underline-offset: 2px; }
+.cs-credit a:hover { text-decoration-color: #ffffff; }
+.cs-credit a:focus-visible { outline: 3px solid var(--focus-ring-on-dark); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- Particles: a full-height column falls/rises; its child sways ---------- */
+.cs-particles {
+  overflow: hidden;
+  pointer-events: none;
+  animation: cs-frame-in 1.2s ease-out both;
+}
+.cs-p {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: var(--s);
+  height: 100%;
+  animation: cs-fall var(--d) linear var(--dl) infinite;
+}
+.cs-p > * {
+  display: block;
+  width: var(--s);
+  height: var(--s);
+  opacity: var(--o);
+  animation: cs-sway var(--sw) ease-in-out var(--dl) infinite alternate;
+}
+@keyframes cs-fall {
+  from { transform: translate3d(0, -8%, 0); }
+  to { transform: translate3d(var(--dx), 104%, 0); }
+}
+@keyframes cs-sway {
+  from { transform: translate3d(-14px, 0, 0); }
+  to { transform: translate3d(14px, 0, 0); }
+}
+
+/* snow */
+.cs-particles--snow .cs-p > i {
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0 42%, rgba(255, 255, 255, 0.55) 60%, rgba(255, 255, 255, 0) 72%);
+}
+
+/* blossom petals */
+.cs-particles--petal .cs-p > i {
+  height: calc(var(--s) * 0.72);
+  border-radius: 75% 0 75% 0;
+  background: linear-gradient(135deg, #fff6f9, var(--c, #f6a8c4));
+  animation-name: cs-flutter;
+}
+@keyframes cs-flutter {
+  from { transform: translate3d(-18px, 0, 0) rotate(-30deg) rotateX(0deg); }
+  to { transform: translate3d(18px, 0, 0) rotate(150deg) rotateX(160deg); }
+}
+
+/* maple leaves */
+.cs-particles--leaf .cs-p > svg {
+  fill: var(--c, #e8743b);
+  animation-name: cs-tumble;
+  filter: drop-shadow(0 1px 1px rgba(60, 20, 0, 0.25));
+}
+@keyframes cs-tumble {
+  from { transform: translate3d(-26px, 0, 0) rotate(-50deg) rotateY(0deg); }
+  to { transform: translate3d(26px, 0, 0) rotate(190deg) rotateY(170deg); }
+}
+
+/* fireflies + warm pollen: rise slowly, twinkle */
+.cs-particles--firefly .cs-p { animation-name: cs-rise; }
+.cs-particles--firefly .cs-p > i {
+  border-radius: 50%;
+  background: #fff4b8;
+  box-shadow: 0 0 6px 2px rgba(255, 214, 102, 0.85), 0 0 16px 6px rgba(255, 196, 70, 0.3);
+  animation-name: cs-twinkle;
+}
+@keyframes cs-rise {
+  0% { transform: translate3d(0, 94%, 0); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate3d(var(--dx), 40%, 0); opacity: 0; }
+}
+@keyframes cs-twinkle {
+  from { transform: translate3d(-12px, 0, 0); opacity: 0.25; }
+  to { transform: translate3d(12px, 0, 0); opacity: var(--o); }
+}
+
+/* ---------- Pause (button / off-screen) + reduced motion ---------- */
+.campus-scene.is-paused :is(.cs-p, .cs-p > *, .cs-cloud, .cs-photo-drift),
+.campus-scene.is-offscreen :is(.cs-p, .cs-p > *, .cs-cloud, .cs-photo-drift) { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .campus-scene :is(.cs-p, .cs-p > *, .cs-cloud, .cs-particles, .cs-photo-drift) { animation: none; }
+  .cs-p { transform: translate3d(0, var(--y), 0); }
+  .cs-frame.is-current { animation-duration: 1ms; }
+  .cs-layer:not([data-depth='0']),
+  .cs-photo-box { will-change: auto; }
+}
+
+/* ---------- Dark theme: dim the scene a touch so it sits with the dark page ---------- */
+[data-theme='dark'] .cs-tint::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 12, 26, 0.14);
+}

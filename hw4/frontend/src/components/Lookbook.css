@@ -1,0 +1,281 @@
+/* ==========================================================================
+   Lookbook — "Worn around campus" (season tabs + editorial scroll-snap gallery)
+   ========================================================================== */
+.lb {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 4.5rem 1.25rem 4rem;
+}
+.lb__head { text-align: center; max-width: 640px; margin: 0 auto 1.75rem; }
+.lb__eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--yale-blue-mid);
+}
+.lb__head h2 {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: var(--heading);
+}
+.lb__sub { margin: 0; color: var(--muted); }
+
+.lb__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.1rem;
+}
+.lb__tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.3rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--sky);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.lb__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.05rem;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--yale-blue);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.lb__tab:hover { background: rgba(40, 109, 192, 0.1); }
+.lb__tab[aria-selected='true'] {
+  background: var(--yale-blue);
+  color: var(--white);
+  box-shadow: 0 3px 10px rgba(0, 53, 107, 0.28);
+}
+.lb__tab:focus-visible { outline: 3px solid var(--yale-blue-light); outline-offset: 2px; }
+.lb__now {
+  padding: 0.05rem 0.42rem;
+  border-radius: 999px;
+  background: rgba(99, 170, 255, 0.22);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.lb__tab[aria-selected='true'] .lb__now { background: rgba(255, 255, 255, 0.2); }
+
+.lb__nav { display: flex; gap: 0.5rem; }
+.lb__arrow {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--yale-blue);
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+.lb__arrow:hover:not(:disabled) { background: var(--sky); }
+.lb__arrow:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+.lb__arrow:focus-visible { outline: 3px solid var(--yale-blue-light); outline-offset: 2px; }
+@media (hover: none) {
+  .lb__nav { display: none; }
+}
+
+/* Gallery: four looks per view on desktop, swipeable scroll-snap row elsewhere. */
+.lb__track {
+  --lb-gap: 1.25rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 3 * var(--lb-gap)) / 4);
+  gap: var(--lb-gap);
+  margin: 0;
+  padding: 0.5rem 0.25rem 2.9rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+.lb__tile { min-width: 0; align-self: start; scroll-snap-align: start; }
+/* Editorial stagger: every other look sits a little lower. */
+.lb__tile:nth-child(even) { padding-top: 2.4rem; }
+
+.lb-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 6px 22px rgba(0, 53, 107, 0.08);
+  transition: translate 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.lb-card:not(.lb-card--skeleton):hover {
+  translate: 0 -4px;
+  border-color: var(--yale-blue-light);
+  box-shadow: 0 16px 36px rgba(0, 53, 107, 0.16);
+}
+.lb-card__stage {
+  position: relative;
+  aspect-ratio: 3 / 4.4;
+  overflow: hidden;
+  border-radius: 19px 19px 0 0;
+  background: var(--sky);
+}
+.lb-card__figure {
+  position: absolute;
+  left: 25%;
+  bottom: 3%;
+  width: 50%;
+  translate: calc(var(--px, 0) * 6px) calc(var(--py, 0) * 3px);
+  transition: translate 0.5s ease-out;
+}
+.lb-card__tag {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--yale-blue);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 33, 71, 0.12);
+}
+
+/* AI photo tiles (from /lookbook/lookbook.json). Oversized a touch so the hover parallax never shows an edge. */
+.lb-card__photo {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  max-width: none;
+  object-fit: cover;
+  translate: calc(var(--px, 0) * -8px) calc(var(--py, 0) * -6px);
+  transition: translate 0.5s ease-out;
+}
+.lb-card__ai {
+  position: absolute;
+  left: 0.65rem;
+  bottom: 0.65rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(0, 33, 71, 0.76);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.lb-card__body {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem 1.05rem;
+}
+.lb-card__scene {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--yale-blue-mid);
+}
+.lb-card__caption { margin: 0; font-size: 0.88rem; color: var(--muted); }
+.lb-card__name {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.3;
+  color: var(--heading);
+}
+.lb-card__link { color: inherit; text-decoration: none; }
+/* The whole card is the link's hit area. */
+.lb-card__link::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 20px; }
+.lb-card__link:focus-visible { outline: none; }
+.lb-card__link:focus-visible::after { outline: 3px solid var(--yale-blue-light); outline-offset: -3px; }
+.lb-card:hover .lb-card__link { text-decoration: underline; text-underline-offset: 3px; }
+.lb-card__price {
+  justify-self: start;
+  margin-top: 0.35rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: var(--yale-blue);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* loading placeholders */
+.lb-card--skeleton .lb-card__stage,
+.lb-skel {
+  background: linear-gradient(100deg, var(--sky) 40%, #f5f9fe 50%, var(--sky) 60%);
+  background-size: 200% 100%;
+  animation: lb-shimmer 1.2s linear infinite;
+}
+.lb-skel { display: block; height: 0.9rem; border-radius: 6px; }
+.lb-skel--short { width: 55%; height: 0.7rem; margin-bottom: 0.35rem; }
+@keyframes lb-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+.lb__empty {
+  margin: 1rem auto;
+  padding: 2rem 1rem;
+  max-width: 520px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--sky);
+  border-radius: var(--radius);
+}
+.lb__note { margin: 0.2rem 0 0; text-align: center; font-size: 0.84rem; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .lb__track { grid-auto-columns: calc((100% - var(--lb-gap)) / 2.25); }
+}
+@media (max-width: 560px) {
+  .lb { padding-top: 3.5rem; }
+  .lb__head h2 { font-size: 1.7rem; }
+  .lb__track { --lb-gap: 0.9rem; grid-auto-columns: 74%; }
+  .lb__tile:nth-child(even) { padding-top: 1.4rem; }
+}
+
+/* ---------- dark theme: page chrome goes dark, the stages stay light ---------- */
+[data-theme='dark'] .lb__tab { color: var(--ink); }
+[data-theme='dark'] .lb__tab:hover { background: rgba(140, 194, 255, 0.12); }
+[data-theme='dark'] .lb__tab[aria-selected='true'] { background: #1d5fae; color: #fff; }
+[data-theme='dark'] .lb__eyebrow,
+[data-theme='dark'] .lb-card__scene { color: var(--link); }
+[data-theme='dark'] .lb__arrow { color: var(--ink); }
+[data-theme='dark'] .lb-card { box-shadow: 0 8px 26px rgba(0, 0, 0, 0.4); }
+[data-theme='dark'] .lb-card__price { background: #1d5fae; }
+[data-theme='dark'] .lb-card--skeleton .lb-card__stage,
+[data-theme='dark'] .lb-skel { background: linear-gradient(100deg, var(--sky) 40%, #1e3a5f 50%, var(--sky) 60%); background-size: 200% 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lb-card,
+  .lb-card__figure,
+  .lb-card__photo { transition: none; translate: none; }
+  .lb-card:not(.lb-card--skeleton):hover { translate: none; }
+  .lb-card--skeleton .lb-card__stage,
+  .lb-skel { animation: none; }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Campus Customs — Yale Merch, New Haven",
+  "short_name": "Campus Customs",
+  "description": "Officially licensed Yale apparel on Broadway, New Haven.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1626",
+  "theme_color": "#00356b",
+  "icons": [
+    { "src": "/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

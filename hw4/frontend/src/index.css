@@ -1,0 +1,202 @@
+/* Global design tokens. Campus Customs is predominantly Yale blue.
+   Contrast (WCAG): every text token below is ≥4.5:1 on --bg, --surface and --sky in its theme. */
+:root {
+  /* ---------- Yale palette ---------- */
+  --yale-blue: #00356b; /* Yale Blue */
+  --yale-blue-dark: #002147;
+  --yale-navy: #001a38; /* deep navy: hero copy, marquee, footer */
+  --yale-blue-mid: #286dc0;
+  --yale-blue-light: #63aaff;
+  --sky: #e8f1fb;
+  --mist: #f4f8fd; /* very light section tint */
+  --ink: #0f1e33;
+  --muted: #55657a;
+  --line: #d6e2f0;
+  --white: #ffffff; /* always literal white (text on blue); use --surface for cards */
+  --surface: #ffffff;
+  --bg: #ffffff;
+  --heading: var(--yale-blue);
+  --link: #1f5fae;
+  --photo-tile: #f6f9fd;
+  --field-border: #6f8bad; /* ≥3:1 on white for form controls */
+  --nav-bg: var(--yale-blue);
+  --accent-gold: #f2c14e; /* sparing use only */
+  --danger: #b42318;
+  --success: #1a7f4b;
+
+  /* ---------- Seasonal accent (html[data-season] below). Use sparingly:
+     badges, underlines, hero glows, focus rings. ----------
+     --season-accent     decorative fill (same in both themes; navy text on it ≥6:1)
+     --season-ink        accent for text/rings on the page background (≥4.5:1)
+     --season-soft       pale tint for pills
+     --season-on-accent  text on an accent fill */
+  --season-accent: #9ad4f5;
+  --season-ink: #0b5f8f;
+  --season-soft: #e4f3fc;
+  --season-on-accent: #002147;
+  --season-glow: rgba(154, 212, 245, 0.45);
+  --focus-ring: var(--season-ink);
+  --focus-ring-on-dark: var(--season-accent); /* rings on navy surfaces (nav, hero, footer) */
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --shadow-sm: 0 1px 2px rgba(0, 33, 71, 0.06), 0 2px 8px rgba(0, 33, 71, 0.05);
+  --shadow: 0 6px 24px rgba(0, 53, 107, 0.12);
+  --shadow-lg: 0 18px 44px rgba(0, 33, 71, 0.18);
+  --max-width: 1200px;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-display: var(--font-serif);
+
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Seasons (set on <html> by index.html, then by SeasonProvider) ---------- */
+html[data-season='winter'] {
+  --season-accent: #9ad4f5; /* icy blue */
+  --season-ink: #0b5f8f;
+  --season-soft: #e4f3fc;
+  --season-glow: rgba(154, 212, 245, 0.5);
+}
+html[data-season='spring'] {
+  --season-accent: #f6a8c4; /* blossom pink */
+  --season-ink: #ad2459;
+  --season-soft: #fdebf2;
+  --season-glow: rgba(246, 168, 196, 0.5);
+}
+html[data-season='summer'] {
+  --season-accent: #f6c453; /* warm gold */
+  --season-ink: #865600;
+  --season-soft: #fdf2d3;
+  --season-glow: rgba(246, 196, 83, 0.5);
+}
+html[data-season='fall'] {
+  --season-accent: #f0894a; /* maple orange */
+  --season-ink: #ad4310;
+  --season-soft: #fde8db;
+  --season-glow: rgba(240, 137, 74, 0.5);
+}
+
+* { box-sizing: border-box; }
+html { scrollbar-gutter: stable; }
+body { margin: 0; min-height: 100vh; }
+img { max-width: 100%; display: block; }
+a { color: var(--link); }
+button, input, select { font: inherit; }
+::selection { background: var(--season-soft); color: var(--ink); }
+
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* Screen-reader-only text (global helper for the design-system components). */
+.cc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Focus + press (zero-specificity defaults; components may refine) ---------- */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+:where(button:not(:disabled), [role='button'], .btn):where(:active) { translate: 0 1px; }
+
+/* ---------- Route change: each page's <main> fades in on mount ---------- */
+@keyframes cc-page-in {
+  from { opacity: 0; translate: 0 6px; }
+  to { opacity: 1; translate: 0 0; }
+}
+#root > main { animation: cc-page-in 0.38s var(--ease-out); }
+
+/* ---------- Dark theme (set on <html> by the inline script in index.html) ---------- */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0b1626;
+  --surface: #13243b;
+  --sky: #162c49;
+  --mist: #0f1d31;
+  --ink: #e6eef8;
+  --muted: #a7b8ce;
+  --line: #2a4467;
+  --heading: #a8d0ff;
+  --link: #8cc2ff;
+  --photo-tile: #e9f0f9; /* product photos have white backgrounds: keep a soft light tile */
+  --field-border: #6283ad;
+  --nav-bg: #0f2a4d;
+  --danger: #ff8f80;
+  --success: #5fd39a;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.55);
+  --focus-ring: var(--season-accent);
+}
+html[data-theme='dark'][data-season='winter'] { --season-ink: #a6dcff; --season-soft: #11304a; }
+html[data-theme='dark'][data-season='spring'] { --season-ink: #ffb3cf; --season-soft: #36182b; }
+html[data-theme='dark'][data-season='summer'] { --season-ink: #ffd470; --season-soft: #33290f; }
+html[data-theme='dark'][data-season='fall'] { --season-ink: #ffad7a; --season-soft: #3a2315; }
+[data-theme='dark'] input,
+[data-theme='dark'] select,
+[data-theme='dark'] textarea { color: var(--ink); }
+[data-theme='dark'] ::placeholder { color: #8296b0; }
+html.theme-anim, html.theme-anim * { transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease !important; }
+
+/* ---------- Reveal on scroll (only hidden once JS has added .js-reveal) ---------- */
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform;
+}
+.js-reveal [data-reveal='up'],
+.js-reveal [data-reveal=''] { transform: translate3d(0, 28px, 0); }
+.js-reveal [data-reveal='left'] { transform: translate3d(-32px, 0, 0); }
+.js-reveal [data-reveal='right'] { transform: translate3d(32px, 0, 0); }
+.js-reveal [data-reveal='zoom'] { transform: scale(0.96); }
+.js-reveal [data-reveal-delay='1'] { transition-delay: 0.08s; }
+.js-reveal [data-reveal-delay='2'] { transition-delay: 0.16s; }
+.js-reveal [data-reveal-delay='3'] { transition-delay: 0.24s; }
+.js-reveal [data-reveal-delay='4'] { transition-delay: 0.32s; }
+.js-reveal [data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+/* After the reveal finishes, drop will-change so nothing stays on its own layer. */
+.js-reveal [data-reveal][data-revealed='done'] { will-change: auto; transition-delay: 0s; }
+
+/* ---------- Reduced motion: no page fade, no press nudge, no reveals ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal [data-reveal] { opacity: 1; transform: none; transition: none; }
+  #root > main { animation: none; }
+  :where(button:not(:disabled), [role='button'], .btn):where(:active) { translate: none; }
+}
+
+/* ---------- Mobile basics ---------- */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { overflow-x: clip; }
+h1, h2, h3 { overflow-wrap: break-word; }
+@media (max-width: 640px) {
+  /* 16px inputs stop iOS Safari from zooming on focus */
+  input:not([type='checkbox']):not([type='radio']),
+  select,
+  textarea { font-size: 16px !important; }
+}
